@@ -7,25 +7,25 @@ resource "google_sql_database_instance" "instance" {
 
   settings {
     tier = var.db_tier
-    
+
     database_flags {
       name  = "log_disconnections"
       value = "on"
     }
-    
+
     database_flags {
       name  = "log_statement"
       value = "ddl"
     }
-    
+
     database_flags {
       name  = "log_temp_files"
       value = "0"
     }
-    
+
     ip_configuration {
       ipv4_enabled    = false
-      private_network = data.google_compute_network.existing_vpc.id
+      private_network = google_compute_network.vpc_network.id
     }
   }
 

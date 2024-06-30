@@ -17,14 +17,19 @@ variable "username" {
 
 variable "db_version" {
   description = "version u wanna create like postgresss or mysql"
-  type = string
+  type        = string
 }
 
 variable "db_tier" {
-    type = string
-  
+  type = string
+
 }
 variable "vpc_name" {
-    type = string
-  
+  type = string
+
+}
+variable "subnet_cidr" {
+  description = "The CIDR range for the subnet."
+  type        = string
+  default     = "10.0.0.0/24"
 }
