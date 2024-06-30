@@ -1,12 +1,12 @@
 # Create a single VM instance
 resource "google_compute_instance" "nginx" {
-  name         = "nginx-instance"
-  machine_type = "e2-micro"
+  name         = var.compute_name
+  machine_type = var.machine-type
   zone         = var.zone
 
   boot_disk {
     initialize_params {
-      image = "debian-cloud/debian-10"
+      image = var.image
     }
   }
 
@@ -22,8 +22,8 @@ resource "google_compute_instance" "nginx" {
 
 # Create an unmanaged instance group
 resource "google_compute_instance_group" "nginx" {
-  name        = "nginx-umig"
-  description = "Unmanaged Instance Group running nginx"
+  name        = var.umig_name
+  description = var.umig_description
   zone        = var.zone
   network     = google_compute_network.vpc.self_link
 
