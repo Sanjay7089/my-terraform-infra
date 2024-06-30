@@ -1,6 +1,10 @@
 terraform {
   backend "gcs" {
-    bucket = "q-bucket-sanjayjat-statefile-bucket"
-    prefix = "q-terraform-sanjayjat/task1"
+
+    # bucket = var.bucket
+    # prefix = var.prefix
+
+    # bucket = "q-bucket-sanjayjat-statefile-bucket"
+    # prefix = "q-terraform-sanjayjat/task1"
   }
 }
