@@ -8,19 +8,16 @@ resource "google_sql_database_instance" "instance" {
   settings {
     tier = var.db_tier
 
-    database_flags {
-      name  = "log_disconnections"
-      value = "on"
-    }
-
-    database_flags {
-      name  = "log_statement"
-      value = "ddl"
-    }
-
-    database_flags {
-      name  = "log_temp_files"
-      value = "0"
+    dynamic "database_flags" {
+      for_each = {
+        log_disconnections = var.log_disconnections ? { name = "log_disconnections", value = "on" } : null,
+        log_statement      = { name = "log_statement", value = var.log_statement },
+        log_temp_files     = { name = "log_temp_files", value = tostring(var.log_temp_files) }
+      }
+      content {
+        name  = database_flags.value.name
+        value = database_flags.value.value
+      }
     }
 
     ip_configuration {
