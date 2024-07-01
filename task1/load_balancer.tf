@@ -5,14 +5,16 @@ resource "google_compute_global_address" "default" {
 
 # Health check configuration
 resource "google_compute_health_check" "default" {
-  name               = var.ahc_lb_name
-  check_interval_sec = 5
-  timeout_sec        = 5
+  name               = var.health_check_name
+  check_interval_sec = var.health_check_interval
+  timeout_sec        = var.health_check_timeout
+  project            = var.project_id
+
   http_health_check {
-    port = 80
+    port         = var.health_check_port
+    request_path = var.health_check_request_path
   }
 }
-
 # Backend service configuration
 resource "google_compute_backend_service" "default" {
   name        = var.backend_service_name

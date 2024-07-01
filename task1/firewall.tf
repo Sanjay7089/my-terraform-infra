@@ -1,44 +1,41 @@
 resource "google_compute_firewall" "allow_iap" {
-  name    = "allow-iap"
-  network = google_compute_network.vpc.name
+  name    = "${var.firewall_name_prefix}iap-${var.username}"
+  network = google_compute_network.vpc.name // Changed from vpc_name to vpc
+  project = var.project_id
 
   allow {
-    protocol = "tcp"
-    ports    = ["22"]
+    protocol = var.iap_firewall_protocol
+    ports    = var.iap_firewall_ports
   }
 
-  source_ranges = ["35.235.240.0/20"]
+  source_ranges = var.iap_source_ranges
 }
 
 resource "google_compute_firewall" "allow_internal" {
-  name    = "allow-internal"
-  network = google_compute_network.vpc.name
+  name    = "${var.firewall_name_prefix}internal-${var.username}"
+  network = google_compute_network.vpc.name // Changed from vpc_name to vpc
+  project = var.project_id
 
-  allow {
-    protocol = "icmp"
+  dynamic "allow" {
+    for_each = var.internal_firewall_rules
+    content {
+      protocol = allow.value.protocol
+      ports    = allow.value.ports
+    }
   }
 
-  allow {
-    protocol = "tcp"
-    ports    = ["0-65535"]
-  }
-
-  allow {
-    protocol = "udp"
-    ports    = ["0-65535"]
-  }
-
-  source_ranges = [google_compute_subnetwork.subnet.ip_cidr_range]
+  source_ranges = [google_compute_subnetwork.subnet.ip_cidr_range] // Changed from vpc_subnet to subnet
 }
 
 resource "google_compute_firewall" "allow_health_check" {
-  name    = "allow-health-check"
-  network = google_compute_network.vpc.name
+  name    = "${var.firewall_name_prefix}health-check-${var.username}"
+  network = google_compute_network.vpc.name // Changed from vpc_name to vpc
+  project = var.project_id
 
   allow {
-    protocol = "tcp"
-    ports    = ["80"]
+    protocol = var.health_check_firewall_protocol
+    ports    = var.health_check_firewall_ports
   }
 
-  source_ranges = ["130.211.0.0/22", "35.191.0.0/16"]
+  source_ranges = var.health_check_source_ranges
 }
