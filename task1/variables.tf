@@ -170,13 +170,14 @@ variable "source_subnetwork_ip_ranges_to_nat" {
 }
 
 
-# variable "bucket" {
-#   type  = string  
-# }
-# variable "prefix" {
-#   type = string
+variable "bucket" {
+  type = string
 
-# }
+}
+variable "prefix" {
+  type = string
+
+}
 variable "firewall_name_prefix" {
   description = "Prefix for firewall rule names"
   type        = string
